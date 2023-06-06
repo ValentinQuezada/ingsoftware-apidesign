@@ -34,7 +34,32 @@ def create_app():
         except:
             abort(500)
 
-    
+    @app.route("/api/v1/login", methods=["GET"])
+    def login():
+
+        body = request.get_json()
+
+        correo = body.get_json()
+        password = body.get_json()
+
+        if correo is None or password is None:
+            abort(422)
+
+        user = User(correo,password)
+
+        if user not in users:
+            abort(404)
+
+        
+
+        return jsonify({
+            "success": True
+        })
+        
+
+
+        
+            
 
     @app.route("/api/v1/products", methods=["GET"])
 
