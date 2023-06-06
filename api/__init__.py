@@ -8,7 +8,7 @@ def create_app():
     active_user = None
     users = [
         User("admin", "admin")
-    ]
+    ] 
     carts = {
         users[0]: ShoppingCart(users[0])
     }
