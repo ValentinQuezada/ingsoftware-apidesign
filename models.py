@@ -12,7 +12,7 @@ class Product:
         self.precio_unitario = precio_unitario
 
     def __repr__(self):
-        return f"'{self.nombre}', {self.precio_unitario})"
+        return f"'{self.nombre}', {self.precio_unitario}"
 
 class ShoppingCart:
     def __init__(self, user : User):
