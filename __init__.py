@@ -34,10 +34,18 @@ def create_app():
         except:
             abort(500)
 
-
-
     @app.route("/api/v1/products", methods=["GET"])
-    def get_product(product_id):
+    def get_products():
+        if products is None:
+            abort(404)
+
+        return jsonify({
+            "success": True,
+            "productos": products
+        })
+
+    @app.route("/api/v1/products/<product_id>", methods=["GET"])
+    def get_product_by_id(product_id):
 
         for p in products:
             if(p.id == product_id):
@@ -51,7 +59,7 @@ def create_app():
             "producto": product.format(),
             "id": product.id,
             "nombre": product.nombre,
-
+            "precio_unitario": product.precio_unitario
         })
 
     @app.route("/api/v1/product/<int:id>", methods=["GET"])
