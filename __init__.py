@@ -50,6 +50,6 @@ def create_app():
 
     @app.route("/")
     def main():
-        return "Api shopping"
+        return "Api para compras"
 
     return app
