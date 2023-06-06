@@ -2,24 +2,25 @@ from flask import Flask, request, jsonify, abort, redirect
 from flask_cors import CORS
 from temp_models import *
 
+active_user = None
+users = [
+    User("admin", "admin")
+]
+carts = {
+    users[0]: ShoppingCart(users[0])
+}
+products = [
+    Product(0, "Sprite", 1.5),
+    Product(1, "Fanta", 1.0),
+    Product(2, "Coca Cola", 1.75),
+    Product(3, "Pepsi", 2.0),
+    Product(4, "7up", 1.5),
+]
+
+
 def create_app():
     app = Flask(__name__)
     CORS(app, origin="*")
-    active_user = None
-    users = [
-        User("admin", "admin")
-    ] 
-    carts = {
-        users[0]: ShoppingCart(users[0])
-    }
-    products = [
-        Product(0, "Sprite", 1.5),
-        Product(1, "Fanta", 1.0),
-        Product(2, "Coca Cola", 1.75),
-        Product(3, "Pepsi", 2.0),
-        Product(4, "7up", 1.5),
-    ]
-
 
     @app.route("/api/v1/user_signup", methods=["POST"])
     def signup():
@@ -47,20 +48,24 @@ def create_app():
         except:
             abort(500)
 
-    @app.route("/api/v1/login", methods=["GET"])
+    @app.route("/api/v1/user_login", methods=["GET"])
     def login():
         try:
             body = request.get_json()
 
-            correo = body.get_json("correo", None)
-            password = body.get_json("password", None)
+            correo = body.get("correo", None)
+            password = body.get("password", None)
 
             if correo is None or password is None:
                 abort(422)
 
-            user = User(correo, password)
+            user = None
 
-            if user not in users:
+            for u in users:
+                if correo == u.username and password == u.password:
+                    user = User(u.username, u.password)
+
+            if user is None:
                 abort(404)
 
             active_user = user
@@ -76,7 +81,7 @@ def create_app():
         try:
             body = request.get_json()
 
-            correo = body.get_json("correo", None)
+            correo = body.get("correo", None)
 
             if correo is None:
                 abort(422)
