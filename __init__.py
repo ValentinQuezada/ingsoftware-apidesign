@@ -38,7 +38,7 @@ def create_app():
 
     @app.route("/api/v1/products", methods=["GET"])
 
-    @app.route("/api/v1/product/<int:id>", methods=["GET"])
+    @app.route("/api/v1/product/<int:id>", methods=["POST"])
     def agregar_producto(id):
         body = request.get_json()
         id = body.get("id", None) 
@@ -48,6 +48,17 @@ def create_app():
         
         product = products[id]
         carts[active_user].add_product(product)
+        
+    @app.route("/api/v1/product", methods=["DELETE"])
+    def eliminar_producto():
+        body = request.get_json()
+        id = body.get("id", None) 
+
+        if id is None:
+            abort(422)
+        
+        product = products[id]
+        carts[active_user].remove_product(product)
 
 
     @app.route("/api/v1/shoppingcart", methods=["GET"])
