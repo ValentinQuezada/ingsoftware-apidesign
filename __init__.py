@@ -11,20 +11,30 @@ def create_app():
     app = Flask(__name__)
     CORS(app, origin="*")
 
-    @app.route("/api/v1/user_signup", methods=["GET"])
+    @app.route("/api/v1/user_signup", methods=["POST"])
     def signup():
+        try:
+            body = request.get_json()
 
-        body = request.get_json()
+            correo =  body.get("correo", None)
+            password = body.get("password", None)
 
-        correo =  body.get("correo", None)
-        password = body.get("password", None)
+            if correo is None or password is None:
+                abort(422)
 
-        if correo is None or password is None:
-            abort(422)
+            user = User(correo, password)
 
-        User(correo, password)
+            user.append(user)
 
+            return jsonify({
+                "success": True,
+                "correo": correo,
+                "password": password
+            })
+        except:
+            abort(500)
 
+    
 
     @app.route("/api/v1/products", methods=["GET"])
 
