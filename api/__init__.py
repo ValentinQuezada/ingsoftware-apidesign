@@ -2,11 +2,23 @@ from flask import Flask, request, jsonify, abort, redirect
 from flask_cors import CORS
 from temp_models import *
 
-active_user = None
-
 def create_app():
     app = Flask(__name__)
     CORS(app, origin="*")
+    active_user = None
+    users = [
+        User("admin", "admin")
+    ]
+    carts = {
+        users[0]: ShoppingCart(users[0])
+    }
+    products = [
+        Product(0, "Sprite", 1.5),
+        Product(1, "Fanta", 1.0),
+        Product(2, "Coca Cola", 1.75),
+        Product(3, "Pepsi", 2.0),
+        Product(4, "7up", 1.5),
+    ]
 
 
     @app.route("/api/v1/user_signup", methods=["POST"])
@@ -125,7 +137,8 @@ def create_app():
                 abort(422)
 
             product = products[int(id)]
-            carts[active_user].add_product(product)
+            cart = carts[active_user]
+            cart.add_product(product)
 
             return redirect("/api/v1/shoppingcart")
         
@@ -142,7 +155,8 @@ def create_app():
                 abort(422)
             
             product = products[int(id)]
-            carts[active_user].remove_product(product)
+            cart = carts[active_user]
+            cart.remove_product(product)
             return redirect("/api/v1/shoppingcart")
         except Exception as e:
             abort(500)
@@ -153,6 +167,11 @@ def create_app():
             "success": True,
             "carrito": carts[active_user]
         })
+
+    @app.route("/api/v1/shoppingcart/buy", methods=["GET"])
+    def comprar():
+        carts[active_user] = dict()
+        return redirect("/api/v1/shoppingcart")
         
 
     @app.errorhandler(404)

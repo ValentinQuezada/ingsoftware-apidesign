@@ -1,12 +1,7 @@
-users = []
-carts = {}
-
 class User:
     def __init__(self, username, password):
         self.username = username
         self.password = password
-        users.append(self)
-        carts[self] = ShoppingCart(self)
 
     def __repr__(self):
         return {
@@ -49,11 +44,3 @@ class ShoppingCart:
             "user": self.user,
             "products": self.products
         }
-
-products = [
-    Product(0, "Sprite", 1.5),
-    Product(1, "Fanta", 1.0),
-    Product(2, "Coca Cola", 1.75),
-    Product(3, "Pepsi", 2.0),
-    Product(4, "7up", 1.5),
-]
