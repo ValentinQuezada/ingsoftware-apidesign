@@ -31,11 +31,11 @@ class ShoppingCart:
     
 
 products = [
-    Product(1, "Sprite", 1.5),
-    Product(2, "Fanta", 1.0),
-    Product(3, "Coca Cola", 1.5),
-    Product(4, "Pepsi", 2.0),
-    Product(5, "7up", 1.5),
+    Product(0, "Sprite", 1.5),
+    Product(1, "Fanta", 1.0),
+    Product(2, "Coca Cola", 1.75),
+    Product(3, "Pepsi", 2.0),
+    Product(4, "7up", 1.5),
 ]
 
 users = [
@@ -43,7 +43,7 @@ users = [
     User("paolov2", "1234")
 ]
 
-carts = [
-    ShoppingCart(users[0]),
-    ShoppingCart(users[1])
-]
+carts = {
+    users[0] : ShoppingCart(users[0]),
+    users[1] : ShoppingCart(users[1])
+}
