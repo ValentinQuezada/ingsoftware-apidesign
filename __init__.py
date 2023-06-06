@@ -9,7 +9,20 @@ def create_app():
     app = Flask(__name__)
     CORS(app, origin="*")
 
-    @app.route("/api/v1/user", methods=["GET"])
+    @app.route("/api/v1/user_signup", methods=["GET"])
+    def signup():
+
+        body = request.get_json()
+
+        correo =  body.get("correo", None)
+        password = body.get("password", None)
+
+        if correo is None or password is None:
+            abort(422)
+
+        User(correo, password)
+
+
 
     @app.route("/api/v1/products", methods=["GET"])
     def get_product(product_id):
