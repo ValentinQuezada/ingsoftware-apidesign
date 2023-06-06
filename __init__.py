@@ -1,9 +1,6 @@
 from flask import Flask, request, jsonify, abort, redirect
-import datetime
 from flask_cors import CORS
-import json
-import requests
-from models import *
+from temp_models import *
 
 active_user = None
 
