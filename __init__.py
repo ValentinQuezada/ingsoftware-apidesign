@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort, redirect
 import datetime
 from flask_cors import CORS
 import json
@@ -63,30 +63,45 @@ def create_app():
 
     @app.route("/api/v1/products", methods=["GET"])
 
-    @app.route("/api/v1/product/<int:id>", methods=["POST"])
+    @app.route("/api/v1/shoppingcart/<int:id>", methods=["POST"])
     def agregar_producto(id):
-        body = request.get_json()
-        id = body.get("id", None) 
+        try:
+            body = request.get_json()
+            id = body.get("product_id", None) 
 
-        if id is None:
-            abort(422)
-        
-        product = products[id]
-        carts[active_user].add_product(product)
-        
-    @app.route("/api/v1/product", methods=["DELETE"])
-    def eliminar_producto():
-        body = request.get_json()
-        id = body.get("id", None) 
+            if id is None:
+                abort(422)
 
-        if id is None:
-            abort(422)
-        
-        product = products[id]
-        carts[active_user].remove_product(product)
+            product = products[int(id)]
+            carts[active_user].add_product(product)
 
+            return redirect("/api/v1/shoppingcart")
+        
+        except Exception as e:
+            abort(500)
+        
+    @app.route("/api/v1/shoppingcart/<int:id>", methods=["DELETE"])
+    def eliminar_producto(id):
+        try:
+            body = request.get_json()
+            id = body.get("product_id", None) 
+
+            if id is None:
+                abort(422)
+            
+            product = products[int(id)]
+            carts[active_user].remove_product(product)
+            return redirect("/api/v1/shoppingcart")
+        except Exception as e:
+            abort(500)
 
     @app.route("/api/v1/shoppingcart", methods=["GET"])
+    def ver_carrito():
+        return jsonify({
+            "success": True,
+            "carrito": carts[active_user]
+        })
+        
 
     @app.errorhandler(404)
     def not_found(error):
