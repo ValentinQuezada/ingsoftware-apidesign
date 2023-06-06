@@ -3,7 +3,7 @@ import datetime
 from flask_cors import CORS
 import json
 import requests
-from models import User, Product, ShoppingCart
+from models import *
 
 def create_app():
     app = Flask(__name__)
@@ -12,6 +12,22 @@ def create_app():
     @app.route("/api/v1/user", methods=["GET"])
 
     @app.route("/api/v1/products", methods=["GET"])
+    def get_product(product_id):
+
+        for p in products:
+            if(p.id == product_id):
+                product = p
+
+        if product is None:
+            abort(404)
+
+        return jsonify({
+            "success": True,
+            "producto": product.format(),
+            "id": product.id,
+            "nombre": product.nombre,
+
+        })
 
     @app.route("/api/v1/shoppingcart", methods=["GET"])
 
