@@ -3,6 +3,7 @@ import datetime
 from flask_cors import CORS
 import json
 import requests
+from models import User, Product, ShoppingCart
 
 def create_app():
     app = Flask(__name__)
