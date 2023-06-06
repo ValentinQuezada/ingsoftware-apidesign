@@ -2,6 +2,23 @@ from flask import Flask, request, jsonify, abort, redirect
 from flask_cors import CORS
 from temp_models import *
 
+app = Flask(__name__)
+CORS(app, origin="*")
+active_user = None
+users = [
+        User("admin", "admin")
+]
+carts = {
+        users[0]: ShoppingCart(users[0])
+}
+products = [
+        Product(0, "Sprite", 1.5),
+        Product(1, "Fanta", 1.0),
+        Product(2, "Coca Cola", 1.75),
+        Product(3, "Pepsi", 2.0),
+        Product(4, "7up", 1.5),
+        Product(5, "Inca Kola", 2.0)
+]
 active_user = None
 users = [
     User("admin", "admin")
