@@ -26,6 +26,12 @@ class ShoppingCart:
         else:
             self.products[product.nombre] = 1
     
+    def remove_product(self, product : Product):
+        if product.nombre in self.products:
+            self.products[product.nombre] -= 1
+            if self.products[product.nombre] == 0:
+                del self.products[product.nombre]
+    
     def __repr__(self):
         return f"'{self.user}', {self.products}"
     
