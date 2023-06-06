@@ -2,9 +2,14 @@ class User:
     def __init__(self, username, password):
         self.username = username
         self.password = password
+        users.append(self)
+        carts[self] = ShoppingCart(self)
 
     def __repr__(self):
-        return f"'{self.username}', '{self.password}'"
+        return {
+            "username": self.username,
+            "password": self.password
+        }
 
 class Product:
     def __init__(self, id, nombre, precio_unitario):
@@ -13,7 +18,11 @@ class Product:
         self.precio_unitario = precio_unitario
 
     def __repr__(self):
-        return f"'{self.nombre}', {self.precio_unitario}"
+        return {
+            "id": self.id,
+            "nombre": self.nombre,
+            "precio_unitario": self.precio_unitario
+        }
 
 class ShoppingCart:
     def __init__(self, user : User):
@@ -33,8 +42,10 @@ class ShoppingCart:
                 del self.products[product.nombre]
     
     def __repr__(self):
-        return f"'{self.user}', {self.products}"
-    
+        return {
+            "user": self.user,
+            "products": self.products
+        }
 
 products = [
     Product(0, "Sprite", 1.5),
