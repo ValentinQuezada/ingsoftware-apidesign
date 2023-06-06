@@ -5,7 +5,6 @@ class User:
     def __init__(self, username, password):
         self.username = username
         self.password = password
-        users.append(self)
         carts[self] = ShoppingCart(self)
 
     def __repr__(self):
