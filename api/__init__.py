@@ -104,16 +104,21 @@ def create_app():
         if products is None:
             abort(404)
 
+        p = []
+        for product in products:
+            p.append(product.__repr__())
+
         return jsonify({
             "success": True,
-            "productos": products
+            "productos": p
         })
 
-    @app.route("/api/v1/products/<product_id>", methods=["GET"])
+    @app.route("/api/v1/products/<int:product_id>", methods=["GET"])
     def get_product_by_id(product_id):
+        product = None
 
         for p in products:
-            if(p.id == product_id):
+            if p.id == product_id:
                 product = p
 
         if product is None:
@@ -121,7 +126,6 @@ def create_app():
 
         return jsonify({
             "success": True,
-            "producto": product.format(),
             "id": product.id,
             "nombre": product.nombre,
             "precio_unitario": product.precio_unitario
